@@ -8,6 +8,78 @@
 
     npm install roundabout
 
+## Usage
+
+A Roundabout stream is technically a Duplex stream but behaves like Transform stream. When any number of 
+transform/duplex streams are added to the stack, data written to the roundabout instance will pipe
+through all streams in the stack and emerge on the roundabout's readable side of things. This makes 
+multi-pipe streams modular and reusable.
+
+#### Features
+
+- behaves like `PassThrough` until streams are added to the stack.
+- adaptive `objectMode` and `highWaterMark` ensure public stream matches readable/writable states.
+  - first stream in stack will adjust public stream's `_writableState` to match.
+  - last stream will adjust `_readableState`
+- roundabout streams can be used by other roundabout streams: STREAMCEPTION!
+
+#### Example
+
+In the following example we setup a psuedo-csv parser. The interesting behavior of this
+example is that the configuration for the readable state of our csv-parser stream will change
+depending on which transform stream is last added to the stack.
+
+```js
+/*!
+ * module dependencies
+ */
+
+var fs = require('fs');
+var roundabout = require('roundabout');
+
+/**
+ * @param {Array} headers
+ * @param {Boolean} stringify (default false)
+ * @return {Roundabout} "transform" stream
+ */
+
+function csvToJson(headers, stringify) {
+  var res = roundabout();
+
+  // objectMode: false => objectMode: true
+  // first used: res writable objectMode = false, res readable objectMode = true
+  res.use(splitRows); 
+
+  // objectMode: true (res readable unchanged)
+  res.use(splitCols); 
+
+  // objectMode: true (res readable unchanged)
+  res.use(associateHeaders(headers));
+
+  if (stringify) {
+    // objectMode: true => objectMode: false
+    // if used, will change res readable objectMode to false
+    res.use(stringifyJson);
+  }
+
+  return res;
+}
+
+/*!
+ * setup stream instances
+ */
+
+var csv = csvToJson([ 'first', 'last' ], true);
+var input = fs.createReadStream('names.csv');
+var output = fs.createWriteStream('names.json');
+
+/*!
+ * plumbing
+ */
+
+input.pipe(csv).pipe(output);
+```
+
 #### License
 
 (The MIT License)
