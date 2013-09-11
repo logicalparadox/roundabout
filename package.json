@@ -1,0 +1,26 @@
+{
+    "name": "roundabout"
+  , "version": "0.0.0"
+  , "description": "Stack several transform streams behind a single transform stream for reusable piping magic."
+  , "author": "Jake Luer <jake@alogicalparadox.com> (http://alogicalparadox.com)"
+  , "license": "MIT"
+  , "keywords": [
+    ]
+  , "repository": {
+        "type": "git"
+      , "url": "git@github.com:logicalparadox/roundabout.git"
+    }
+  , "engines": {
+      "node": "*"
+    }
+  , "main": "./index"
+  , "scripts": {
+      "test": "mocha"
+    }
+  , "dependencies": {
+    }
+  , "devDependencies": {
+        "chai": "*"
+      , "mocha": "*"
+    }
+}
