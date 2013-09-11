@@ -1,6 +1,6 @@
-# roundabout
+# roundabout [![Build Status](https://travis-ci.org/logicalparadox/roundabout.png?branch=master)](https://travis-ci.org/logicalparadox/roundabout)
 
-> Stack several transform streams behind a single transform stream for reusable piping magic.
+> Stack several transform streams behind a single stream for reusable piping magic.
 
 #### Installation
 
