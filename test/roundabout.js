@@ -2,6 +2,20 @@ var PassThrough = require('stream').PassThrough;
 var transmute = require('transmute');
 
 describe('roundabout', function() {
+  describe('general usage', function() {
+    it('mimics transform end if nothing written', function(done) {
+      var stream = roundabout();
+      var pt = PassThrough();
+      var next= chai.after(2, done);
+      stream.on('readable', function() {});
+      pt.on('readable', function() {});
+      stream.on('end', next);
+      pt.on('end', next);
+      stream.end();
+      pt.end();
+    });
+  });
+
   describe('with default options', function() {
     it('performs like a passthrough if no streams added', function(done) {
       var stream = roundabout();

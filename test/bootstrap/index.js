@@ -12,6 +12,12 @@ global.should = global.chai.should();
 global.chai.use(require('chai-spies'));
 //global.chai.use(require('chai-http'));
 
+global.chai.after = function (n, fn) {
+  return function () {
+    --n || fn.apply(null, arguments);
+  }
+};
+
 /*!
  * Import project
  */
