@@ -1,6 +1,6 @@
 {
   "name": "roundabout",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Stack several transform streams behind a single stream for reusable piping magic.",
   "author": "Jake Luer <jake@alogicalparadox.com> (http://alogicalparadox.com)",
   "license": "MIT",
